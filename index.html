@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <script src="node_modules/vue/dist/vue.min.js"></script>
+        <script src="node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
+        <script src="node_modules/jquery/dist/jquery.min.js"></script>
+        <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.min.css">
+    </head>
+    <body>
+        <div class="container" id="app">
+            <nav class="navbar navbar-light bg-light fixed-top">
+                <div class="container-fluid">
+                    <a class="navbar-brand" href="/">Vue Game Store</a>
+                    <div class="navbar-text ml-auto">
+                        <b>cart:</b> 
+                        <span class="badge badge-pill bg-success">{{ cart.length }}</span>
+                    </div>
+                </div>
+            </nav>
+            <div class="row display-flex">
+                <div class="col-3 p-2 mt-3">
+                    <div class="col-12 inline-form mr-auto position-relative mt-5 p-3 bg-light rounded">
+                        <label class="font-weight-bold mr-2" for="formMax">Max</label>
+                        <input type="text" id="formMax" class="form-control w-25" v-model="maximum">
+                        <input type="range" class="custom-range" min="0" max="100" v-model="maximum">
+                    </div>
+                </div>
+            </div>
+            <div class="row display-flex">
+                <div class="col-3 d-flex mb-3 align-items-center p-2"
+                    v-for="item in products"
+                    v-if="item.price<=Number(maximum)">
+                    <div class="col-12 bg-white rounded-3 p-2">
+                        <img class="img-fluid d-block m-auto" :src="item.image" :alt="name">
+                        <h3 class="h4 text-dark text-truncate">{{ item.title }}</h3>
+                        <p class="mb-0">{{ item.platform }}</p>
+                        <div class="h5 float-right">${{ item.price }}</div>
+                        <button class="btn btn-primary" v-on:click="addItem(item)">Add to Cart</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <style>
+            *{
+                box-sizing:border-box;
+                margin:0;
+                outline:none;
+            }
+            body {
+                background-color: #001c29;
+                background-image: url("https://www.transparenttextures.com/patterns/cubes.png");
+            }
+            .btn:focus, .btn:active {
+                outline:none;
+                box-shadow:none!important;
+            }
+            .row.display-flex {
+                display: flex;
+                flex-wrap: wrap;
+            }
+            .row.display-flex > [class*='col-'] {
+                display: flex;
+                flex-direction: column;
+            }
+        </style>
+        <script>
+            var app = new Vue({
+                el: '#app',
+                data: {
+                    maximum: 60,
+                    products: null,
+                    cart: []
+                },
+                methods: {
+                    addItem: function(product) {
+                    this.cart.push(product);
+                    }
+                },
+                mounted: function() {
+                    fetch('data/gamedata.json')
+                    .then(response => response.json())
+                    .then(data=>{
+                    this.products = data;
+                    })
+                }
+            });
+        </script>
+    </body>
+</html>
