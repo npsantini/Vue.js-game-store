@@ -49,7 +49,10 @@
                         <img class="img-fluid d-block m-auto" :src="item.image" :alt="name">
                         <h3 class="h4 text-dark text-truncate">{{ item.title }}</h3>
                         <p class="mb-0">{{ item.platform }}</p>
-                        <div class="h5 float-right">{{ item.price |  currency }}</div>
+                        <!--<div class="h5 float-right">{{ item.price |  currency }}</div>-->
+                        <div class="h5 float-right">
+                            <price></price>
+                        </div>
                         <button class="btn btn-primary" v-on:click="addItem(item)">Add to Cart</button>
                     </div>
                 </div>
@@ -80,6 +83,16 @@
             }
         </style>
         <script>
+            Vue.component("price", {
+                data: function() {
+                    return {
+                        prefix: '$',
+                        value: 23.24,
+                        precision: 2
+                    }
+                },
+                template: '<span>{{ this.prefix + Number.parseFloat(this.value).toFixed(this.precision) }}</span>'
+            });
             var app = new Vue({
                 el: '#app',
                 data: {
