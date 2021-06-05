@@ -51,7 +51,12 @@
                         <p class="mb-0">{{ item.platform }}</p>
                         <!--<div class="h5 float-right">{{ item.price |  currency }}</div>-->
                         <div class="h5 float-right">
-                            <price></price>
+                            <price  :value="Number(item.price)" 
+                                    :prefix="'&euro;'"
+                                    :precision="2"
+                                    :conversion=".87">
+                            </price>
+                            <!-- <price :value="Number(item.price)"></price> -->
                         </div>
                         <button class="btn btn-primary" v-on:click="addItem(item)">Add to Cart</button>
                     </div>
@@ -86,12 +91,24 @@
             Vue.component("price", {
                 data: function() {
                     return {
-                        prefix: '$',
-                        value: 23.24,
-                        precision: 2
                     }
                 },
-                template: '<span>{{ this.prefix + Number.parseFloat(this.value).toFixed(this.precision) }}</span>'
+                props: {
+                    value: Number,
+                    prefix: {
+                        type: String,
+                        default: '$'
+                    },
+                    precision: {
+                        type: Number,
+                        default: 2
+                    },
+                    conversion: {
+                        type: Number,
+                        default: 1
+                    }
+                },
+                template: '<span>{{ this.prefix + Number.parseFloat(this.value * this.conversion).toFixed(this.precision) }}</span>'
             });
             var app = new Vue({
                 el: '#app',
