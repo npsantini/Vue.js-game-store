@@ -19,3 +19,11 @@ body {
     display: flex;
     flex-direction: column;
 }
+
+.fade-enter, .fade-leave-to {
+    opacity: 0;
+}
+
+.fade-enter-active, .fade-leave-active {
+    transition: all 1s ease-in-out;
+}

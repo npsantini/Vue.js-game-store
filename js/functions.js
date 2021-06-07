@@ -20,6 +20,29 @@ Vue.component("price", {
     },
     template: '<span>{{ this.prefix + Number.parseFloat(this.value * this.conversion).toFixed(this.precision) }}</span>'
 });
+
+Vue.component("product-list", {
+    props: ['products', 'maximum'],
+    template: `
+        <div class="row display-flex">
+            <div class="col-3 d-flex mb-3 align-items-center p-2"
+                v-for="item in products"
+                v-if="item.price<=Number(maximum)">
+                <div class="col-12 bg-white rounded-3 p-2">
+                    <img class="img-fluid d-block m-auto" :src="item.image" :alt="name">
+                    <h3 class="h4 text-dark text-truncate">{{ item.title }}</h3>
+                    <p class="mb-0">{{ item.platform }}</p>
+                    
+                    <div class="h5 float-right">
+                        <price  :value="Number(item.price)"></price>
+                    </div>
+                    <button class="btn btn-primary" @click="$emit('add', item)">Add to Cart</button>
+                </div>
+            </div>
+        </div>
+    `
+});
+
 var app = new Vue({
     el: '#app',
     data: {

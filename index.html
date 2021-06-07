@@ -44,27 +44,7 @@
                     </div>
                 </div>
             </div>
-            <div class="row display-flex">
-                <div class="col-3 d-flex mb-3 align-items-center p-2"
-                    v-for="item in products"
-                    v-if="item.price<=Number(maximum)">
-                    <div class="col-12 bg-white rounded-3 p-2">
-                        <img class="img-fluid d-block m-auto" :src="item.image" :alt="name">
-                        <h3 class="h4 text-dark text-truncate">{{ item.title }}</h3>
-                        <p class="mb-0">{{ item.platform }}</p>
-                        <!--<div class="h5 float-right">{{ item.price |  currency }}</div>-->
-                        <div class="h5 float-right">
-                            <price  :value="Number(item.price)" 
-                                    :prefix="'&euro;'"
-                                    :precision="2"
-                                    :conversion=".87">
-                            </price>
-                            <!-- <price :value="Number(item.price)"></price> -->
-                        </div>
-                        <button class="btn btn-primary" v-on:click="addItem(item)">Add to Cart</button>
-                    </div>
-                </div>
-            </div>
+            <product-list :products="products" :maximum="maximum" @add="addItem"></product-list>
         </div>
         <script src="js/functions.js"></script>
     </body>
